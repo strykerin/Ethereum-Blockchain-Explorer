@@ -1,3 +1,4 @@
+using Nethereum.Web3;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,9 @@ namespace EthereumBlockchainExplorer
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            // Add Web3 to DI container
+            builder.Services.AddSingleton<IWeb3, Web3>();
 
             await builder.Build().RunAsync();
         }
