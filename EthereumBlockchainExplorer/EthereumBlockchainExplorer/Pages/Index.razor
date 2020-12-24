@@ -5,11 +5,24 @@
         <h2>Ethereum Blockchain Explorer</h2>
     </div>
     <div class="row">
-        <div class="col-2">
-            <label>Block number:</label>
+        <div class="col-3">
+            <div class="row">
+                <label>Block number:</label>
+            </div>
+            @if (_invalidParse)
+            {
+                <div class="row">
+                    <label>Block number should only contain numbers</label>
+                </div>
+            }
         </div>
         <div class="col-4">
-            <input @bind-value="@_blockNumber" @bind-value:event="oninput"/>
+            <input @bind-value="@_blockNumberString" @bind-value:event="oninput"/>
+        </div>
+        <div>
+            <button @onclick="GetBlockInfo">
+                Search!
+            </button>
         </div>
     </div>
     <div class="row">
@@ -18,5 +31,24 @@
 </div>
 
 @code {
+    private string _blockNumberString;
     private int _blockNumber;
+    private bool _invalidParse = false;
+
+    public void GetBlockInfo()
+    {
+        try
+        {
+            _blockNumber = Int32.Parse(_blockNumberString);
+            if (_invalidParse = true)
+            {
+                _invalidParse = false;
+                this.StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            _invalidParse = true;
+        }
+    }
 }
