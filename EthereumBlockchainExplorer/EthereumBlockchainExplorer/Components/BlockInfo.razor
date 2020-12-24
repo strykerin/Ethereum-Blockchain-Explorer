@@ -1,0 +1,21 @@
+﻿@inject IWeb3 _web3
+<h3>BlockInfo</h3>
+
+<h3>@BlockNumber</h3>
+
+@if (BlockNumber != 0)
+{
+    <h1>
+
+    </h1>
+}
+
+@code {
+    [Parameter]
+    public int BlockNumber { get; set; }
+
+    public void GetBlockInfo()
+    {
+
+    }
+}
