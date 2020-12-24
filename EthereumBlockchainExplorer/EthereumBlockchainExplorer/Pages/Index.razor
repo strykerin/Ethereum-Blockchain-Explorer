@@ -26,11 +26,12 @@
         </div>
     </div>
     <div class="row">
-        <BlockInfo BlockNumber="@_blockNumber"/>
+        <BlockInfo @ref="" BlockNumber="@_blockNumber"/>
     </div>
 </div>
 
 @code {
+    BlockNumber blockNumber;
     private string _blockNumberString;
     private int _blockNumber;
     private bool _invalidParse = false;
