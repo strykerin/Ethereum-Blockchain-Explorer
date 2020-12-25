@@ -19,6 +19,11 @@ namespace EthereumBlockchainExplorer.Services
             return await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
         }
 
+        public async Task<BlockWithTransactions> GetBlockInfo(HexBigInteger blockNumber)
+        {
+            return await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(blockNumber);
+        }
+
         public async Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber)
         {
             List<BlockWithTransactions> blocksWithTransactions = new List<BlockWithTransactions>();

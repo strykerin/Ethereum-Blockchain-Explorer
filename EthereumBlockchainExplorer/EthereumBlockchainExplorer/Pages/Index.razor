@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IEthereumService _ethereumService 
+@inject NavigationManager _navigationManager
 
 <div class="container">
     <div class="row">
@@ -57,10 +58,11 @@
         try
         {
             _blockNumber = Int32.Parse(_blockNumberString);
-            if (_invalidParse)
+            _invalidParse = false;
+            if (!_invalidParse)
             {
                 _invalidParse = false;
-                this.StateHasChanged();
+                _navigationManager.NavigateTo($"/Block/{_blockNumber}");
             }
         }
         catch (Exception ex)

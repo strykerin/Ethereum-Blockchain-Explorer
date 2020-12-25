@@ -1,0 +1,44 @@
+﻿@page "/Block/{BlockNumber:int}"
+@inject IEthereumService _ethereumService
+
+<div class="container">
+    <div class="row">
+        <h2>
+            Block #@BlockNumber
+        </h2>
+    </div>
+    @if (_hasLoaded)
+    {
+        <div class="row">
+            <p>
+                Block Height: @BlockNumber
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                TimeStamp: @_block.Timestamp
+            </p>
+        </div>
+        <div class="row">
+            <p>
+                Mined By: @_block.Miner
+            </p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int BlockNumber { get; set; }
+    private HexBigInteger _blockNumberBigInteger;
+    private bool _hasLoaded = false;
+
+    private BlockWithTransactions _block;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blockNumberBigInteger = new HexBigInteger(BlockNumber);
+        _block = await _ethereumService.GetBlockInfo(_blockNumberBigInteger);
+        _hasLoaded = true;
+    }
+}
