@@ -22,7 +22,7 @@ namespace EthereumBlockchainExplorer
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             // Add services to DI container
-            builder.Services.AddSingleton<IWeb3, Web3>();
+            builder.Services.AddSingleton<IWeb3>(ctx => new Web3("https://mainnet.infura.io/v3/7238211010344719ad14a89db874158c"));
             builder.Services.AddSingleton<IEthereumService, EthereumService>();
 
             await builder.Build().RunAsync();
