@@ -1,8 +1,16 @@
 ﻿@page "/"
+@inject IEthereumService _ethereumService 
 
 <div class="container">
     <div class="row">
-        <h2>Ethereum Blockchain Explorer</h2>
+        <div class="col">
+            <h2>Ethereum Blockchain Explorer</h2>
+        </div>
+        <div class="col">
+            <p>
+                Latest Block Number: @_latestBlockNumber
+            </p>
+        </div>
     </div>
     <div class="row">
         <div class="col-3">
@@ -26,15 +34,20 @@
         </div>
     </div>
     <div class="row">
-        <BlockInfo @ref="" BlockNumber="@_blockNumber"/>
+        <BlockInfo BlockNumber="@_blockNumber"/>
     </div>
 </div>
 
 @code {
-    BlockNumber blockNumber;
+    private Nethereum.Hex.HexTypes.HexBigInteger _latestBlockNumber;
     private string _blockNumberString;
     private int _blockNumber;
     private bool _invalidParse = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _latestBlockNumber = await _ethereumService.GetLatestBlockNumber();
+    }
 
     public void GetBlockInfo()
     {
