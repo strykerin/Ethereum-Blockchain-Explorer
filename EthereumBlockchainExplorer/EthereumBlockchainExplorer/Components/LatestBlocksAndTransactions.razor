@@ -1,0 +1,48 @@
+﻿@inject IEthereumService _ethereumService
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h3>
+                Latest Blocks
+            </h3>
+            @if (hasLoaded)
+            {
+                @foreach (BlockWithTransactions block in _blockWithTransactions)
+                {
+                    <div class="row custom-block-border">
+                        <div class="row">
+                            <p>
+                                Miner: @block.Miner
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p>
+                                Transactions: @block.TransactionCount()
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p>
+                                Block Number: @block.Number
+                            </p>
+                        </div>
+                   </div>
+               }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Nethereum.Hex.HexTypes.HexBigInteger LatestBlockNumber { get; set; }
+
+    private bool hasLoaded = false;
+    private List<BlockWithTransactions> _blockWithTransactions = new List<BlockWithTransactions>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blockWithTransactions = await _ethereumService.GetLatest5BlocksInfo(LatestBlockNumber);
+        hasLoaded = true;
+    }
+}
