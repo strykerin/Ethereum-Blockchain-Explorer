@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="row">
-        <BlockInfo BlockNumber="@_blockNumber"/>
+        <BlockInfo LatestBlockNumber="_latestBlockNumber"/>
     </div>
 </div>
 
@@ -54,7 +54,7 @@
         try
         {
             _blockNumber = Int32.Parse(_blockNumberString);
-            if (_invalidParse = true)
+            if (_invalidParse)
             {
                 _invalidParse = false;
                 this.StateHasChanged();

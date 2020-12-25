@@ -1,4 +1,6 @@
-﻿    using Nethereum.Hex.HexTypes;
+﻿using System.Collections.Generic;
+using Nethereum.RPC.Eth.DTOs;
+using Nethereum.Hex.HexTypes;
 using Nethereum.Web3;
 using System.Threading.Tasks;
 
@@ -15,6 +17,17 @@ namespace EthereumBlockchainExplorer.Services
         public async Task<HexBigInteger> GetLatestBlockNumber()
         {
             return await _web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+        }
+
+        public async Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber)
+        {
+            List<BlockWithTransactions> blocksWithTransactions = new List<BlockWithTransactions>();
+            for (int i = 0; i < 5; i--)
+            {
+                BlockWithTransactions block = await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(latestBlockNumber);
+                blocksWithTransactions.Add(block);
+            }
+            return blocksWithTransactions;
         }
     }
 }
