@@ -34,12 +34,15 @@
         </div>
     </div>
     <div class="row">
-        <BlockInfo LatestBlockNumber="_latestBlockNumber"/>
+        @if (_latestBlockNumber != null)
+        {
+            <BlockInfo LatestBlockNumber="_latestBlockNumber"/>
+        }
     </div>
 </div>
 
 @code {
-    private Nethereum.Hex.HexTypes.HexBigInteger _latestBlockNumber;
+    private Nethereum.Hex.HexTypes.HexBigInteger _latestBlockNumber = null;
     private string _blockNumberString;
     private int _blockNumber;
     private bool _invalidParse = false;
