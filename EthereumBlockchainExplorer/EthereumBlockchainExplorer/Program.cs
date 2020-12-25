@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using EthereumBlockchainExplorer.Services;
 
 namespace EthereumBlockchainExplorer
 {
@@ -20,8 +21,9 @@ namespace EthereumBlockchainExplorer
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            // Add Web3 to DI container
+            // Add services to DI container
             builder.Services.AddSingleton<IWeb3, Web3>();
+            builder.Services.AddSingleton<IEthereumService, EthereumService>();
 
             await builder.Build().RunAsync();
         }
