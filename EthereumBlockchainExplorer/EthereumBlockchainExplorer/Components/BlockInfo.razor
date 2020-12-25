@@ -1,21 +1,27 @@
-﻿@inject IWeb3 _web3
-<h3>BlockInfo</h3>
+﻿@inject IEthereumService _ethereumService
 
-<h3>@BlockNumber</h3>
-
-@if (BlockNumber != 0)
-{
-    <h1>
-
-    </h1>
-}
+<div class="container">
+    @if (hasLoaded)
+    {
+        @foreach (BlockWithTransactions block in _blockWithTransactions)
+        {
+            <h3>
+                Block Hash: @block.BlockHash
+            </h3>
+        }
+    }
+</div>
 
 @code {
     [Parameter]
-    public int BlockNumber { get; set; }
+    public Nethereum.Hex.HexTypes.HexBigInteger LatestBlockNumber { get; set; }
 
-    public void GetBlockInfo()
+    private bool hasLoaded = false;
+    private List<BlockWithTransactions> _blockWithTransactions = new List<BlockWithTransactions>();
+
+    protected override async Task OnInitializedAsync()
     {
-
+        _blockWithTransactions = await _ethereumService.GetLatest5BlocksInfo(LatestBlockNumber);
+        hasLoaded = true;
     }
 }
