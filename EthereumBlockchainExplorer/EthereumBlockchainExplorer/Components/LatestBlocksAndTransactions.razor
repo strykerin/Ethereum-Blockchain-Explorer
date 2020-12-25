@@ -6,29 +6,62 @@
             <h3>
                 Latest Blocks
             </h3>
-            @if (hasLoaded)
-            {
-                @foreach (BlockWithTransactions block in _blockWithTransactions)
+            <div class="row custom-block-border">
+                @if (hasLoaded)
                 {
-                    <div class="row custom-block-border">
+                    @foreach (BlockWithTransactions block in _blockWithTransactions)
+                    {
+                            <div class="row">
+                                <p>
+                                    Miner: @block.Miner
+                                </p>
+                            </div>
+                            <div class="row">
+                                <p>
+                                    Transactions: @block.TransactionCount()
+                                </p>
+                            </div>
+                            <div class="row">
+                                <p>
+                                    Block Number: @block.Number
+                                </p>
+                            </div>
+                   }
+                }
+           </div>
+        </div>
+        <div class="col-6">
+            <h3>
+                Latest Transactions
+            </h3>
+            <div class="row custom-block-border">
+                @if (hasLoaded)
+                {
+                    @foreach (Transaction transaction in _latestTransactions)
+                    {
                         <div class="row">
                             <p>
-                                Miner: @block.Miner
+                                Transaction Hash: @transaction.TransactionHash
                             </p>
                         </div>
                         <div class="row">
                             <p>
-                                Transactions: @block.TransactionCount()
+                                From: @transaction.From
                             </p>
                         </div>
                         <div class="row">
                             <p>
-                                Block Number: @block.Number
+                                To: @transaction.To
                             </p>
                         </div>
-                   </div>
-               }
-            }
+                        <div class="row">
+                            <p>
+                                Value: @transaction.Value
+                            </p>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -39,10 +72,12 @@
 
     private bool hasLoaded = false;
     private List<BlockWithTransactions> _blockWithTransactions = new List<BlockWithTransactions>();
+    private Transaction[] _latestTransactions;
 
     protected override async Task OnInitializedAsync()
     {
         _blockWithTransactions = await _ethereumService.GetLatest5BlocksInfo(LatestBlockNumber);
+        _latestTransactions = _blockWithTransactions.First().Transactions;
         hasLoaded = true;
     }
 }
