@@ -34,5 +34,10 @@ namespace EthereumBlockchainExplorer.Services
             }
             return blocksWithTransactions;
         }
+
+        public async Task<Transaction> GetTransaction(string txHash)
+        {
+            return await _web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(txHash);
+        }
     }
 }
