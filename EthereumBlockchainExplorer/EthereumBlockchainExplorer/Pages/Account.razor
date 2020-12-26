@@ -3,7 +3,7 @@
 
 @if (_hasLoaded)
 {
-    <p>Account Balance: @_accountBalance</p>
+    <p>Account Balance: @Web3.Convert.FromWei(_accountBalance) Ether</p>
     @foreach (Transaction transaction in _transactionsForAccount)
     {
         <p>

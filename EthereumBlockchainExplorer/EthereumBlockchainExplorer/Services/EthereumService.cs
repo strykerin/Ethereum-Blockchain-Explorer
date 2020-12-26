@@ -49,23 +49,19 @@ namespace EthereumBlockchainExplorer.Services
 
         public async Task<List<Transaction>> GetTransactionsByAccount(string addressHash)
         {
-            int beginInt = 11530900;
-            int endInt = 11530902;
             List<Transaction> transactionsForAccount = new List<Transaction>();
-            for (int i = beginInt; i <= endInt; i++)
+            List<BlockWithTransactions> blocks = await this.GetLatest5BlocksInfo(await this.GetLatestBlockNumber());
+            foreach (BlockWithTransactions block in blocks)
             {
-                BlockWithTransactions block = await this.GetBlockInfo(new HexBigInteger(i));
                 foreach (Transaction transaction in block.Transactions)
                 {
-                    if (transaction.From == addressHash || transaction.To == addressHash)
+                    if (transaction.From.Contains(addressHash) || transaction.To.Contains(addressHash))
                     {
                         transactionsForAccount.Add(transaction);
                     }
                 }
             }
-
             return transactionsForAccount;
         }
-
     }
 }
