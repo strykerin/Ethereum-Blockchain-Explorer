@@ -1,0 +1,21 @@
+﻿@page "/Block/{BlockNumber:int}/Transaction/{TxHash}"
+
+<div class="container">
+    <div class="row">
+        <h2>
+            Transaction @TxHash
+        </h2>
+        <p>
+            @Block.Transactions.Where(t => t.TransactionHash == TxHash).First().Value
+        </p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string TxHash { get; set; }
+    [Parameter]
+    public int BlockNumber { get; set; }
+    [Parameter]
+    public BlockWithTransactions Block { get; set; }
+}
