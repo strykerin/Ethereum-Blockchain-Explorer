@@ -11,20 +11,66 @@
     {
         @if (!(_block is null))
         {
-            <div class="row">
+            <div class="card">
                 <p>
-                    Block Height: @BlockNumber
+                    <b>Block Height:</b> @BlockNumber
                 </p>
-            </div>
-            <div class="row">
                 <p>
-                    TimeStamp: @_block.Timestamp
+                    <b>TimeStamp:</b> @_block.Timestamp
                 </p>
-            </div>
-            <div class="row">
                 <p>
-                    Mined By: @_block.Miner
+                    <b>Mined By:</b> @_block.Miner
                 </p>
+                <p>
+                    <b>Difficulty:</b> @_block.Difficulty
+                </p>
+                <p>
+                    <b>Size:</b> @_block.Size
+                </p>
+                <p>
+                    <b>Gas Used:</b> @_block.GasUsed
+                </p>
+                <p>
+                    <b>Gas Limit:</b> @_block.GasLimit
+                </p>
+                <p>
+                    <b>Extra Data:</b> @_block.ExtraData
+                </p>
+                <p>
+                    <b>Hash:</b> @_block.BlockHash
+                </p>
+                <p>
+                    <b>Parent Hash:</b> @_block.ParentHash
+                </p>
+                <p>
+                    <b>Sha3Uncles:</b> @_block.Sha3Uncles
+                </p>
+                <p>
+                    <b>StateRoot:</b> @_block.StateRoot
+                </p>
+                <p>
+                    <b>Nonce:</b> @_block.Nonce
+                </p>
+                <div class="scrollmenu">
+                    <h3>Transactions:</h3>
+                    <table>
+                        <tr>
+                            <th>Tx Hash</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Amount</th>
+                        </tr>
+                        @foreach (Transaction transaction in _block.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.TransactionHash</td>
+                                <td>@transaction.From</td>
+                                <td>@transaction.To</td>
+                                <td>@transaction.Value</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         }
         else

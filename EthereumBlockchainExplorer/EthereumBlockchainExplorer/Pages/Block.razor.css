@@ -10,15 +10,17 @@
 }
 
 p {
-    font-size: 12px;
-    text-align: left;
+
     margin-bottom: 5px;
 }
 
-h3 {
-    text-align: center;
+
+td {
+    font-size: 15px;
 }
 
-a {
-    color: black;
+
+.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
 }
