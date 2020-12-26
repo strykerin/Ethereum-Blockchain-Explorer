@@ -6,26 +6,22 @@
             <h3>
                 Latest Blocks
             </h3>
-            <div class="row custom-block-border">
+            <div class="row">
                 @if (hasLoaded)
                 {
                     @foreach (BlockWithTransactions block in _blockWithTransactions)
                     {
-                            <div class="row">
-                                <p>
-                                    Miner: @block.Miner
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p>
-                                    Transactions: @block.TransactionCount()
-                                </p>
-                            </div>
-                            <div class="row">
-                                <p>
-                                    Block Number: @block.Number
-                                </p>
-                            </div>
+                        <div class="card">
+                            <p>
+                                <b>Block Number:</b> @block.Number
+                            </p>
+                            <p>
+                                <b>Miner:</b> @block.Miner
+                            </p>
+                            <p>
+                                <b>Transactions:</b> @block.TransactionCount()
+                            </p>
+                        </div>
                    }
                 }
            </div>
@@ -34,29 +30,23 @@
             <h3>
                 Latest Transactions
             </h3>
-            <div class="row custom-block-border">
+            <div class="row">
                 @if (hasLoaded)
                 {
                     @foreach (Transaction transaction in _latestTransactions)
                     {
-                        <div class="row">
+                        <div class="card">
                             <p>
-                                Transaction Hash: @transaction.TransactionHash
+                                <b>Transaction Hash:</b> @transaction.TransactionHash
                             </p>
-                        </div>
-                        <div class="row">
                             <p>
-                                From: @transaction.From
+                                <b>From:</b> @transaction.From
                             </p>
-                        </div>
-                        <div class="row">
                             <p>
-                                To: @transaction.To
+                                <b>To:</b> @transaction.To
                             </p>
-                        </div>
-                        <div class="row">
                             <p>
-                                Value: @transaction.Value
+                                <b>Value:</b> @transaction.Value
                             </p>
                         </div>
                     }
