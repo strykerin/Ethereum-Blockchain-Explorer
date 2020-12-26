@@ -9,21 +9,32 @@
     </div>
     @if (_hasLoaded)
     {
-        <div class="row">
-            <p>
-                Block Height: @BlockNumber
-            </p>
-        </div>
-        <div class="row">
-            <p>
-                TimeStamp: @_block.Timestamp
-            </p>
-        </div>
-        <div class="row">
-            <p>
-                Mined By: @_block.Miner
-            </p>
-        </div>
+        @if (!(_block is null))
+        {
+            <div class="row">
+                <p>
+                    Block Height: @BlockNumber
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    TimeStamp: @_block.Timestamp
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    Mined By: @_block.Miner
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <p>
+                    There is no block #@BlockNumber
+                </p>
+            </div>
+        }
     }
 </div>
 
