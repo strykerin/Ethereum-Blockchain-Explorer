@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-3">
+        <div class="col-1">
             <div class="row">
                 <label>Block number:</label>
             </div>
@@ -25,10 +25,10 @@
                 </div>
             }
         </div>
-        <div class="col-4">
+        <div class="col-3 justify-content-start">
             <input @bind-value="@_blockNumberString" @bind-value:event="oninput"/>
         </div>
-        <div>
+        <div class="col justify-content-start">
             <button @onclick="GetBlockInfo">
                 Search!
             </button>
