@@ -35,21 +35,23 @@
             <div class="row">
                 @if (hasLoaded)
                 {
-                    @foreach (Transaction transaction in _latestTransactions)
+                    @foreach (Transaction transaction in _latest5Transactions)
                     {
                         <div class="card">
-                            <p>
-                                <b>Transaction Hash:</b> @transaction.TransactionHash
-                            </p>
-                            <p>
-                                <b>From:</b> @transaction.From
-                            </p>
-                            <p>
-                                <b>To:</b> @transaction.To
-                            </p>
-                            <p>
-                                <b>Value:</b> @transaction.Value
-                            </p>
+                            <a href="/Transaction/@transaction.TransactionHash">
+                                <p>
+                                    <b>Transaction Hash:</b> @transaction.TransactionHash
+                                </p>
+                                <p>
+                                    <b>From:</b> @transaction.From
+                                </p>
+                                <p>
+                                    <b>To:</b> @transaction.To
+                                </p>
+                                <p>
+                                    <b>Value:</b> @transaction.Value
+                                </p>
+                            </a>
                         </div>
                     }
                 }
@@ -64,12 +66,12 @@
 
     private bool hasLoaded = false;
     private List<BlockWithTransactions> _blockWithTransactions = new List<BlockWithTransactions>();
-    private Transaction[] _latestTransactions;
+    private Transaction[] _latest5Transactions;
 
     protected override async Task OnInitializedAsync()
     {
         _blockWithTransactions = await _ethereumService.GetLatest5BlocksInfo(LatestBlockNumber);
-        _latestTransactions = _blockWithTransactions.First().Transactions;
+        _latest5Transactions = _blockWithTransactions.First().Transactions.Take(5).ToArray();
         hasLoaded = true;
     }
 }
