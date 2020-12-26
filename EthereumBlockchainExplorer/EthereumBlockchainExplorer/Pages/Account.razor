@@ -1,0 +1,29 @@
+﻿@page "/Account/{AccountHash}"
+@inject IEthereumService _ethereumService 
+
+@if (_hasLoaded)
+{
+    <p>Account Balance: @_accountBalance</p>
+    @foreach (Transaction transaction in _transactionsForAccount)
+    {
+        <p>
+            @transaction.TransactionHash
+        </p>
+    }
+}
+
+@code {
+    [Parameter]
+    public string AccountHash { get; set; }
+    private bool _hasLoaded = false;
+    private List<Transaction> _transactionsForAccount;
+    private HexBigInteger _accountBalance;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _accountBalance = await _ethereumService.GetAddressBalance(AccountHash);
+        _transactionsForAccount = await _ethereumService.GetTransactionsByAccount(AccountHash);
+        _hasLoaded = true;
+    }
+}

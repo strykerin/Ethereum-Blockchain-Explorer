@@ -11,5 +11,7 @@ namespace EthereumBlockchainExplorer.Services
         Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber);
         Task<BlockWithTransactions> GetBlockInfo(HexBigInteger blockNumber);
         Task<Transaction> GetTransaction(string txHash);
+        Task<HexBigInteger> GetAddressBalance(string addressHash);
+        Task<List<Transaction>> GetTransactionsByAccount(string addressHash);
     }
 }

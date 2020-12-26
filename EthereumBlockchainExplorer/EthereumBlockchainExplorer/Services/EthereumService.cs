@@ -27,7 +27,7 @@ namespace EthereumBlockchainExplorer.Services
         public async Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber)
         {
             List<BlockWithTransactions> blocksWithTransactions = new List<BlockWithTransactions>();
-            for (int i = 0; i < 5; i++)
+             for (int i = 0; i < 5; i++)
             {
                 BlockWithTransactions block = await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(latestBlockNumber);
                 blocksWithTransactions.Add(block);
@@ -39,5 +39,31 @@ namespace EthereumBlockchainExplorer.Services
         {
             return await _web3.Eth.Transactions.GetTransactionByHash.SendRequestAsync(txHash);
         }
+
+        public async Task<HexBigInteger> GetAddressBalance(string addressHash)
+        {
+            return await _web3.Eth.GetBalance.SendRequestAsync(addressHash);
+        }
+
+        public async Task<List<Transaction>> GetTransactionsByAccount(string addressHash)
+        {
+            int beginInt = 11530900;
+            int endInt = 11530902;
+            List<Transaction> transactionsForAccount = new List<Transaction>();
+            for (int i = beginInt; i <= endInt; i++)
+            {
+                BlockWithTransactions block = await this.GetBlockInfo(new HexBigInteger(i));
+                foreach (Transaction transaction in block.Transactions)
+                {
+                    if (transaction.From == addressHash || transaction.To == addressHash)
+                    {
+                        transactionsForAccount.Add(transaction);
+                    }
+                }
+            }
+
+            return transactionsForAccount;
+        }
+
     }
 }

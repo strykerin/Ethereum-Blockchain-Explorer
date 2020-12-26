@@ -58,15 +58,15 @@
                             <th>Tx Hash</th>
                             <th>From</th>
                             <th>To</th>
-                            <th>Amount</th>
+                            <th>Amount (Ether)</th>
                         </tr>
                         @foreach (Transaction transaction in _block.Transactions)
                         {
                             <tr>
-                                <td>@transaction.TransactionHash</td>
+                                <td><a href="/Transaction/@transaction.TransactionHash">@transaction.TransactionHash</a></td>
                                 <td>@transaction.From</td>
                                 <td>@transaction.To</td>
-                                <td>@transaction.Value</td>
+                                <td>@Web3.Convert.FromWei(transaction.Value)</td>
                             </tr>
                         }
                     </table>
