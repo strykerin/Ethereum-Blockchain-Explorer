@@ -1,21 +1,70 @@
-﻿@page "/Block/{BlockNumber:int}/Transaction/{TxHash}"
+﻿@page "/Transaction/{TxHash}"
+@inject IEthereumService _ethereumService
 
 <div class="container">
     <div class="row">
         <h2>
-            Transaction @TxHash
+            Transaction Details
         </h2>
-        <p>
-            @Block.Transactions.Where(t => t.TransactionHash == TxHash).First().Value
-        </p>
     </div>
+    @if (_hasLoaded)
+    {
+        @if (!(_transaction is null))
+        {
+            <div class="card">
+                <p>
+                    <b>Transaction Hash:</b> @_transaction.TransactionHash
+                </p>
+                <p>
+                    <a href="Block/@_transaction.BlockNumber"><b>Block Hash:</b> @_transaction.BlockHash</a>
+                </p>
+                <p>
+                    <b>Block Number:</b> @_transaction.BlockNumber
+                </p>
+                <p>
+                    <b>From:</b> @_transaction.From
+                </p>
+                <p>
+                    <b>To:</b> @_transaction.To
+                </p>
+                <p>
+                    <b>Value:</b> @Web3.Convert.FromWei(_transaction.Value) Ether
+                </p>
+                <p>
+                    <b>Gas Price:</b> @Web3.Convert.FromWei(_transaction.GasPrice) Ether
+                </p>
+                <p>
+                    <b>Gas Limit:</b> @_transaction.Gas
+                </p>
+                <p>
+                    <b>Nonce:</b> @_transaction.Nonce
+                </p>
+                <p>
+                    <b>Input:</b> @_transaction.Input
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <p>
+                    There is no transaction @TxHash
+                </p>
+            </div>
+        }
+    }
 </div>
 
 @code {
     [Parameter]
     public string TxHash { get; set; }
-    [Parameter]
-    public int BlockNumber { get; set; }
-    [Parameter]
-    public BlockWithTransactions Block { get; set; }
+
+    private Transaction _transaction;
+    private bool _hasLoaded = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _transaction = await _ethereumService.GetTransaction(TxHash);
+        _hasLoaded = true;
+    }
 }
