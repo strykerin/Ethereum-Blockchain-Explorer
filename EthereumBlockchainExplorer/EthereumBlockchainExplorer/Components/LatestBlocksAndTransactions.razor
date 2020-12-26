@@ -11,21 +11,23 @@
                 {
                     @foreach (BlockWithTransactions block in _blockWithTransactions)
                     {
+                        <div class="card">
                             <div class="row">
                                 <p>
-                                    Miner: @block.Miner
+                                    <b>Block Number:</b> @block.Number
                                 </p>
                             </div>
                             <div class="row">
                                 <p>
-                                    Transactions: @block.TransactionCount()
+                                    <b>Miner:</b> @block.Miner
                                 </p>
                             </div>
                             <div class="row">
                                 <p>
-                                    Block Number: @block.Number
+                                    <b>Transactions:</b> @block.TransactionCount()
                                 </p>
                             </div>
+                        </div>
                    }
                 }
            </div>
