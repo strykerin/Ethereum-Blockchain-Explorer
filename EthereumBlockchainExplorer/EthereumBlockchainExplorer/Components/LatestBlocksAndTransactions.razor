@@ -12,15 +12,17 @@
                     @foreach (BlockWithTransactions block in _blockWithTransactions)
                     {
                         <div class="card">
-                            <p>
-                                <b>Block Number:</b> @block.Number
-                            </p>
-                            <p>
-                                <b>Miner:</b> @block.Miner
-                            </p>
-                            <p>
-                                <b>Transactions:</b> @block.TransactionCount()
-                            </p>
+                            <a href="/Block/@block.Number">
+                                <p>
+                                    <b>Block Number:</b> @block.Number
+                                </p>
+                                <p>
+                                    <b>Miner:</b> @block.Miner
+                                </p>
+                                <p>
+                                    <b>Transactions:</b> @block.TransactionCount()
+                                </p>
+                            </a>
                         </div>
                    }
                 }
