@@ -70,7 +70,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _blockWithTransactions = await _ethereumService.GetLatest5BlocksInfo(LatestBlockNumber);
+        _blockWithTransactions = await _ethereumService.GetLatestBlocksInfo(LatestBlockNumber, 5);
         _latest5Transactions = _blockWithTransactions.First().Transactions.Take(5).ToArray();
         hasLoaded = true;
     }
