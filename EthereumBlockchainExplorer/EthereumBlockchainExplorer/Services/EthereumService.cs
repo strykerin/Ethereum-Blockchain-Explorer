@@ -24,12 +24,14 @@ namespace EthereumBlockchainExplorer.Services
             return await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(blockNumber);
         }
 
-        public async Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber)
+        public async Task<List<BlockWithTransactions>> GetLatestBlocksInfo(HexBigInteger latestBlockNumber, int n)
         {
             List<BlockWithTransactions> blocksWithTransactions = new List<BlockWithTransactions>();
-             for (int i = 0; i < 5; i++)
+            int index = (int)latestBlockNumber.Value;
+            for (int i = index; i > index-n; i--)
             {
-                BlockWithTransactions block = await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(latestBlockNumber);
+                HexBigInteger blockNumber = new HexBigInteger(i);
+                BlockWithTransactions block = await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(blockNumber);
                 blocksWithTransactions.Add(block);
             }
             return blocksWithTransactions;
@@ -47,23 +49,20 @@ namespace EthereumBlockchainExplorer.Services
 
         public async Task<List<Transaction>> GetTransactionsByAccount(string addressHash)
         {
-            int beginInt = 11530900;
-            int endInt = 11530902;
             List<Transaction> transactionsForAccount = new List<Transaction>();
-            for (int i = beginInt; i <= endInt; i++)
+            List<BlockWithTransactions> blocks = await this.GetLatestBlocksInfo(await this.GetLatestBlockNumber(), 10);
+            foreach (BlockWithTransactions block in blocks)
             {
-                BlockWithTransactions block = await this.GetBlockInfo(new HexBigInteger(i));
                 foreach (Transaction transaction in block.Transactions)
                 {
-                    if (transaction.From == addressHash || transaction.To == addressHash)
+                    if (transaction.From.ToLower().Contains(addressHash.ToLower()) || 
+                        (!(transaction.To is null) && transaction.To.ToLower().Contains(addressHash.ToLower())))
                     {
                         transactionsForAccount.Add(transaction);
                     }
                 }
             }
-
             return transactionsForAccount;
         }
-
     }
 }

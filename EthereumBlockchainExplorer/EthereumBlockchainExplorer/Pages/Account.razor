@@ -1,16 +1,57 @@
 ﻿@page "/Account/{AccountHash}"
 @inject IEthereumService _ethereumService 
 
-@if (_hasLoaded)
-{
-    <p>Account Balance: @_accountBalance</p>
-    @foreach (Transaction transaction in _transactionsForAccount)
+<div class="container">
+    <div class="row">
+        <h2>
+            Address: @AccountHash
+        </h2>
+    </div>
+    @if (_hasLoaded)
+    {
+        <div class="card">
+            <p>Account Balance: @Web3.Convert.FromWei(_accountBalance) Ether</p>
+            <h4>
+                Transactions From/To this Address in the last 10 Blocks:
+            </h4>
+            @if (_transactionsForAccount == null || _transactionsForAccount.Count == 0)
+            {
+                <p>
+                    No transactions on the last 10 blocks for the Address @AccountHash
+                </p>
+            }
+            else
+            {
+                <div class="scrollmenu">
+                    <table>
+                        <tr>
+                            <th>Tx Hash</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Amount (Ether)</th>
+                        </tr>
+                        @foreach (Transaction transaction in _transactionsForAccount)
+                        {
+                            <tr>
+                                <td><a href="/Transaction/@transaction.TransactionHash">@transaction.TransactionHash</a></td>
+                                <td><a href="/Account/@transaction.From">@transaction.From</a></td>
+                                <td><a href="/Account/@transaction.To">@transaction.To</a></td>
+                                <td>@Web3.Convert.FromWei(transaction.Value)</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+    }
+    else
     {
         <p>
-            @transaction.TransactionHash
+            Loading...
         </p>
     }
-}
+</div>
+
 
 @code {
     [Parameter]
