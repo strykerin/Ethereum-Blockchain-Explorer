@@ -14,7 +14,7 @@ Now, we add the library that will allow us to get data from Ethereum, the [Nethe
 dotnet add package Nethereum.Web3 --version 3.8.0
 ```
 
-We will create a service class to encapsulate all the logic of interacting with Ethereum. This class will be called EthereumService and will receive as construction injection the IWeb3 interface:
+We will create a service class to encapsulate all the logic of interacting with Ethereum. This class will be called `EthereumService` and will receive as construction injection the `IWeb3` interface:
 
 ```csharp
 public class EthereumService : IEthereumService
@@ -26,9 +26,9 @@ public class EthereumService : IEthereumService
     }
 ```
 
-In order to obtain the implementation of the IWeb3 interface in runtime, we will need to add it to the Dependency Injection container. We will also add the EthereumService class to the DI container so the pages we will create can get data from the Blockchain using this class.
+In order to obtain the implementation of the `IWeb3` interface in runtime, we will need to add it to the Dependency Injection container. We will also add the `EthereumService` class to the DI container so the pages we will create can get data from the Blockchain using this class.
 
-In the Program.cs class:
+In the `Program.cs` class:
 
 ```csharp
 public class Program
@@ -51,7 +51,7 @@ Note that when we instantiate the Web3 class, we need the URL from the Infura ma
 
 ## Creating our First page
 
-Now we will create our first page, the index.razor. We will inject two services to this page, the IEthereumService in order to get data from Ethereum and NavigationManager in order to navigate to others pages.
+Now we will create our first page, the `index.razor`. We will inject two services to this page, the `IEthereumService` in order to get data from Ethereum and `NavigationManager` in order to navigate to others pages.
 
 ```razor
 @page "/"
@@ -66,7 +66,7 @@ On this page we will want to display the following information:
 
 * The latest transactions
 
-To get the latest block number when we the page renders, we will override the method OnInitializedAsync():
+To get the latest block number when we the page renders, we will override the method `OnInitializedAsync()`:
 
 ```csharp
 @code {
@@ -95,7 +95,7 @@ When we finish to get the latest block number, we can now display it in the page
         </div>
     </div>
 ```
-The method in EthereumService class that gets the latest block number:
+The method in `EthereumService` class that gets the latest block number:
 
 ```csharp
 public async Task<HexBigInteger> GetLatestBlockNumber()
@@ -108,9 +108,9 @@ public async Task<HexBigInteger> GetLatestBlockNumber()
 
 Blazor applications are built using components. Components include a self-contained piece of the user interface and the logic necessary to get the data or respond to UI events.
 
-We will create a razor component (LatestBlocksAndTransactions.razor) to encapsulate the User Interface that is responsible of getting the latest 5 Ethereum blocks and the 5 latest approved transactions.
+We will create a razor component (`LatestBlocksAndTransactions.razor`) to encapsulate the User Interface that is responsible of getting the latest 5 Ethereum blocks and the 5 latest approved transactions.
 
-This component will receive as parameter the latest block number. The Index.razor will render this component and pass this parameter by declaring them using the HTML element syntax:
+This component will receive as parameter the latest block number. The `Index.razor` will render this component and pass this parameter by declaring them using the HTML element syntax:
 
 ```razor
 <div class="row">
@@ -121,7 +121,7 @@ This component will receive as parameter the latest block number. The Index.razo
 </div>
 ```
 
-This created LatestBlocksAndTransactions component will now get the data from the last 5 blocks:
+This created `LatestBlocksAndTransactions` component will now get the data from the last 5 blocks:
 
 ```razor
 @code {
@@ -168,7 +168,7 @@ and then render it on the page:
 
 ## Block Page
 
-This page will contain information about a block. We will receive as a parameter for this page the BlockNumber. With this information, we can search for the desired block and its transactions by overriding the OnInitializedAsync() method and calling the GetBlockInfomethod from IEthereumService:
+This page will contain information about a block. We will receive as a parameter for this page the `BlockNumber`. With this information, we can search for the desired block and its transactions by overriding the `OnInitializedAsync()` method and calling the `GetBlockInfomethod` from `IEthereumService`:
 
 ```razor
 @code {
@@ -187,7 +187,7 @@ This page will contain information about a block. We will receive as a parameter
     }
 }
 ```
-The field `_hasLoaded` was created because when the page renders there is still no information about the block and the transactions that it contains. We will only display the blockÔÇÖs information when we get the data from Ethereum. So after we successfully get the data, we set the `_hasLoaded` to true and we can display this information as seen below:
+The field `_hasLoaded` was created because when the page renders there is still no information about the block and the transactions that it contains. We will only display the block's information when we get the data from Ethereum. So after we successfully get the data, we set the `_hasLoaded` to true and we can display this information as seen below:
 
 ```razor
 @page "/Block/{BlockNumber:int}"
@@ -222,7 +222,7 @@ On this page we will display two information for the Address:
 
 * The transactions From/To this Address on the last 10 blocks
 
-In order to get the balance for an address, we call the GetBalancemethod from the Web3 class:
+In order to get the balance for an address, we call the `GetBalancemethod` from the `Web3` class:
 
 ```csharp
 public async Task<HexBigInteger> GetAddressBalance(string addressHash)
@@ -257,7 +257,7 @@ public async Task<List<Transaction>> GetTransactionsByAccount(string addressHash
 
 Since the publish output of a Blazor WebAssembly project are static files, we can deploy the application to static site hosts such as Azure Static Web Apps and GitHub Pages. We will automate the deployment of our Blockchain Explorer to GitHub Pages with GitHub Actions.
 
-In order to create a GitHub Actions, go to your repository, navigate to your Actions tab then click on the link ÔÇ£set up a workflow yourselfÔÇØ. GitHub will display a template of a YAML file with instructions on how to build and deploy the application.
+In order to create a GitHub Actions, go to your repository, navigate to your Actions tab then click on the link "set up a workflow yourself". GitHub will display a template of a YAML file with instructions on how to build and deploy the application.
 
 For our Blazor WebAssembly application, the created workflow YAML file to deploy our Blockchain Explorer can be found below:
 
