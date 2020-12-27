@@ -36,6 +36,10 @@ jobs:
      # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         run: dotnet publish EthereumBlockchainExplorer/EthereumBlockchainExplorer/EthereumBlockchainExplorer.csproj -c Release -o release --nologo
+      
+     # changes the base-tag in index.html from '/' to 'Ethereum-Blockchain-Explorer' to match GitHub Pages repository subdirectory
+      - name: Change base-tag in index.html from / to Ethereum-Blockchain-Explorer
+        run: sed -i 's/<base href="\/" \/>/<base href="\/Ethereum-Blockchain-Explorer\/" \/>/g' release/wwwroot/index.html
         
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
