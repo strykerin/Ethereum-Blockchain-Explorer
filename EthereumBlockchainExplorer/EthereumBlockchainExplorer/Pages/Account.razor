@@ -34,8 +34,8 @@
                         {
                             <tr>
                                 <td><a href="/Transaction/@transaction.TransactionHash">@transaction.TransactionHash</a></td>
-                                <td>@transaction.From</td>
-                                <td>@transaction.To</td>
+                                <td><a href="/Account/@transaction.From">@transaction.From</a></td>
+                                <td><a href="/Account/@transaction.To">@transaction.To</a></td>
                                 <td>@Web3.Convert.FromWei(transaction.Value)</td>
                             </tr>
                         }
