@@ -28,3 +28,7 @@ td {
     overflow: auto;
     white-space: nowrap;
 }
+
+td, tr, th {
+    text-align: center;
+}
