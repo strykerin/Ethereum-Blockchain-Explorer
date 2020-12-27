@@ -310,7 +310,3 @@ jobs:
 ```
 
 There is a great article by Niels Swimberghe about [how to deploy ASP.NET Blazor WebAssembly to GitHub Pages](https://swimburger.net/blog/dotnet/how-to-deploy-aspnet-blazor-webassembly-to-github-pages). It has a video and a step by step guide on how to deploy a Blazor WebAssembly application to GitHub Pages and how to solve the problems when doing so.
-
-## Conclusion
-
-In this article we have created an Ethereum Blockchain Explorer using the new Blazor WebAssembly framework. We also have published this application to GitHub Pages using GitHub Actions.
