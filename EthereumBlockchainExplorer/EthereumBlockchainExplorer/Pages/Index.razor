@@ -14,9 +14,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-1">
+        <div class="col-6">
             <div class="row">
-                <label>Block number:</label>
+                <input @bind-value="@_search" @bind-value:event="oninput" placeholder="Address, Tx Hash or Block Number"/>
+                <button @onclick="GetBlockInfo">
+                    Search!
+                </button>
             </div>
             @if (_invalidParse)
             {
@@ -24,14 +27,6 @@
                     <label>Invalid Address, Block Number or Transaction Hash</label>
                 </div>
             }
-        </div>
-        <div class="col-3 justify-content-start">
-            <input @bind-value="@_search" @bind-value:event="oninput"/>
-        </div>
-        <div class="col justify-content-start">
-            <button @onclick="GetBlockInfo">
-                Search!
-            </button>
         </div>
     </div>
     <div class="row">
