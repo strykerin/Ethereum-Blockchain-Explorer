@@ -21,12 +21,12 @@
             @if (_invalidParse)
             {
                 <div class="row">
-                    <label>Block number should only contain numbers</label>
+                    <label>Invalid Address, Block Number or Transaction Hash</label>
                 </div>
             }
         </div>
         <div class="col-3 justify-content-start">
-            <input @bind-value="@_blockNumberString" @bind-value:event="oninput"/>
+            <input @bind-value="@_search" @bind-value:event="oninput"/>
         </div>
         <div class="col justify-content-start">
             <button @onclick="GetBlockInfo">
@@ -44,28 +44,72 @@
 
 @code {
     private Nethereum.Hex.HexTypes.HexBigInteger _latestBlockNumber = null;
-    private string _blockNumberString;
-    private int _blockNumber;
+    private string _search;
     private bool _invalidParse = false;
+
+    private bool _foundAccount = false;
+    private bool _foundBlock = false;
+    private bool _foundTransaction = false;
 
     protected override async Task OnInitializedAsync()
     {
         _latestBlockNumber = await _ethereumService.GetLatestBlockNumber();
     }
 
-    public void GetBlockInfo()
+    public async Task GetBlockInfo()
     {
         try
         {
-            _blockNumber = Int32.Parse(_blockNumberString);
-            _invalidParse = false;
-            if (!_invalidParse)
+            var blocks = await _ethereumService.GetBlockInfo(new HexBigInteger(_search));
+            if (blocks != null)
             {
-                _invalidParse = false;
-                _navigationManager.NavigateTo($"/Block/{_blockNumber}");
+                _foundBlock = true;
             }
         }
-        catch (Exception ex)
+        catch
+        {
+            _foundBlock = false;
+        }
+        if (_foundBlock)
+        {
+            _invalidParse = false;
+            _navigationManager.NavigateTo($"/Block/{Int32.Parse(_search)}");
+        }
+        try
+        {
+            var account = await _ethereumService.GetAddressBalance(_search);
+            if (account != new HexBigInteger(0))
+            {
+                _foundAccount = true;
+            }
+        }
+        catch
+        {
+            _foundAccount = false;
+        }
+        if (_foundAccount)
+        {
+            _invalidParse = false;
+            _navigationManager.NavigateTo($"Account/{_search}");
+        }
+        try
+        {
+            var transaction = await _ethereumService.GetTransaction(_search);
+            if (transaction != null)
+            {
+                _foundTransaction = true;
+            }
+        }
+        catch
+        {
+            _foundTransaction = false;
+        }
+        if (_foundTransaction)
+        {
+            _invalidParse = false;
+            _navigationManager.NavigateTo($"/Transaction/{_search}");
+        }
+        else
         {
             _invalidParse = true;
         }
