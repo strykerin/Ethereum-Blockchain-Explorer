@@ -22,14 +22,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.*
-           
-      - name: Get current directory
-        run: pwd
-
-      - name: List files
-        run: ls EthereumBlockchainExplorer/EthereumBlockchainExplorer
-        
+          dotnet-version: 5.0.*       
      
      # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
