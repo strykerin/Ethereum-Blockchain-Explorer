@@ -25,13 +25,13 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.*
+           
+      - name: Get current directory
+        run: pwd
      
      # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
         run: dotnet publish .\EthereumBlockchainExplorer\EthereumBlockchainExplorer -c Release -o release --nologo
-      
-      - name: Get current directory
-        run: pwd
         
       - name: Commit wwwroot to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
