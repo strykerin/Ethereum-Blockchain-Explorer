@@ -112,26 +112,108 @@ We will create a razor component (LatestBlocksAndTransactions.razor) to encapsul
 
 This component will receive as parameter the latest block number. The Index.razor will render this component and pass this parameter by declaring them using the HTML element syntax:
 
-<iframe src="https://medium.com/media/ed91227f3bbe3c5ae996d37fe6ec53ed" frameborder=0></iframe>
+```razor
+<div class="row">
+    @if (_latestBlockNumber != null)
+    {
+        <LatestBlocksAndTransactions LatestBlockNumber="_latestBlockNumber"/>
+    }
+</div>
+```
 
 This created LatestBlocksAndTransactions component will now get the data from the last 5 blocks:
 
-<iframe src="https://medium.com/media/b3e3c6acb38f1f64012a553221265938" frameborder=0></iframe>
+```razor
+@code {
+    [Parameter]
+    public Nethereum.Hex.HexTypes.HexBigInteger LatestBlockNumber { get; set; }
+
+    private bool hasLoaded = false;
+    private List<BlockWithTransactions> _blockWithTransactions = new List<BlockWithTransactions>();
+    private Transaction[] _latest5Transactions;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blockWithTransactions = await _ethereumService.GetLatestBlocksInfo(LatestBlockNumber, 5);
+        _latest5Transactions = _blockWithTransactions.First().Transactions.Take(5).ToArray();
+        hasLoaded = true;
+    }
+}
+```
 
 and then render it on the page:
 
-<iframe src="https://medium.com/media/ea4b770bd8b54a8a19172b7c81d891ab" frameborder=0></iframe>
+```razor
+<div class="row">
+    @if (hasLoaded)
+    {
+        @foreach (BlockWithTransactions block in _blockWithTransactions)
+        {
+            <div class="card">
+                <a href="/Block/@block.Number">
+                    <p>
+                        <b>Block Number:</b> @block.Number
+                    </p>
+                    <p>
+                        <b>Miner:</b> @block.Miner
+                    </p>
+                    <p>
+                        <b>Transactions:</b> @block.TransactionCount()
+                    </p>
+                </a>
+            </div>
+       }
+    }
+```
 
 ## Block Page
 
 This page will contain information about a block. We will receive as a parameter for this page the BlockNumber. With this information, we can search for the desired block and its transactions by overriding the OnInitializedAsync() method and calling the GetBlockInfomethod from IEthereumService:
 
-<iframe src="https://medium.com/media/28022f794b54e21fe19ab5eab4540757" frameborder=0></iframe>
+```razor
+@code {
+    [Parameter]
+    public int BlockNumber { get; set; }
+    private HexBigInteger _blockNumberBigInteger;
+    private bool _hasLoaded = false;
 
-The field _hasLoaded was created because when the page renders there is still no information about the block and the transactions that it contains. We will only display the blockÔÇÖs information when we get the data from Ethereum. So after we successfully get the data, we set the _hasLoaded to true and we can display this information as seen below:
+    private BlockWithTransactions _block;
 
-<iframe src="https://medium.com/media/f0afb605f7c986870576bbba38f204fd" frameborder=0></iframe>
+    protected override async Task OnInitializedAsync()
+    {
+        _blockNumberBigInteger = new HexBigInteger(BlockNumber);
+        _block = await _ethereumService.GetBlockInfo(_blockNumberBigInteger);
+        _hasLoaded = true;
+    }
+}
+```
+The field `_hasLoaded` was created because when the page renders there is still no information about the block and the transactions that it contains. We will only display the blockÔÇÖs information when we get the data from Ethereum. So after we successfully get the data, we set the `_hasLoaded` to true and we can display this information as seen below:
 
+```razor
+@page "/Block/{BlockNumber:int}"
+@inject IEthereumService _ethereumService
+
+<div class="container">
+    <div class="row">
+        <h2>
+            Block #@BlockNumber
+        </h2>
+    </div>
+    @if (_hasLoaded)
+    {
+        @if (!(_block is null))
+        {
+            <div class="card">
+                <p>
+                    <b>Block Height:</b> @BlockNumber
+                </p>
+                <p>
+                    <b>TimeStamp:</b> @_block.Timestamp
+                </p>
+                <p>
+                    <b>Mined By:</b> @_block.Miner
+                </p>
+```
 ## Address Page
 
 On this page we will display two information for the Address:
