@@ -24,11 +24,11 @@ namespace EthereumBlockchainExplorer.Services
             return await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(blockNumber);
         }
 
-        public async Task<List<BlockWithTransactions>> GetLatest5BlocksInfo(HexBigInteger latestBlockNumber)
+        public async Task<List<BlockWithTransactions>> GetLatestBlocksInfo(HexBigInteger latestBlockNumber, int n)
         {
             List<BlockWithTransactions> blocksWithTransactions = new List<BlockWithTransactions>();
             int index = (int)latestBlockNumber.Value;
-            for (int i = index; i > index-5; i--)
+            for (int i = index; i > index-n; i--)
             {
                 HexBigInteger blockNumber = new HexBigInteger(i);
                 BlockWithTransactions block = await _web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(blockNumber);
@@ -50,12 +50,13 @@ namespace EthereumBlockchainExplorer.Services
         public async Task<List<Transaction>> GetTransactionsByAccount(string addressHash)
         {
             List<Transaction> transactionsForAccount = new List<Transaction>();
-            List<BlockWithTransactions> blocks = await this.GetLatest5BlocksInfo(await this.GetLatestBlockNumber());
+            List<BlockWithTransactions> blocks = await this.GetLatestBlocksInfo(await this.GetLatestBlockNumber(), 10);
             foreach (BlockWithTransactions block in blocks)
             {
                 foreach (Transaction transaction in block.Transactions)
                 {
-                    if (transaction.From.Contains(addressHash) || transaction.To.Contains(addressHash))
+                    if (transaction.From.ToLower().Contains(addressHash.ToLower()) || 
+                        (!(transaction.To is null) && transaction.To.ToLower().Contains(addressHash.ToLower())))
                     {
                         transactionsForAccount.Add(transaction);
                     }
