@@ -12,7 +12,7 @@
                     @foreach (BlockWithTransactions block in _blockWithTransactions)
                     {
                         <div class="card">
-                            <a href="/Block/@block.Number">
+                            <a href="Block/@block.Number">
                                 <p>
                                     <b>Block Number:</b> @block.Number
                                 </p>
@@ -44,7 +44,7 @@
                     @foreach (Transaction transaction in _latest5Transactions)
                     {
                         <div class="card">
-                            <a href="/Transaction/@transaction.TransactionHash">
+                            <a href="Transaction/@transaction.TransactionHash">
                                 <p>
                                     <b>Transaction Hash:</b> @transaction.TransactionHash
                                 </p>
